@@ -1,132 +1,94 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Cria a seção principal
-    const section = document.createElement('section');
-    section.id = 'faq';
-    section.className = 'help-section';
+document.addEventListener("DOMContentLoaded", () => {
+  // ====== SEÇÃO FAQ ======
+  const section = document.createElement("section");
+  section.id = "faq";
+  section.className =
+    "w-full bg-[#0a0a0f] text-white py-6 flex flex-col items-center px-4"; // py-6 = 24px top/bottom
 
-    // Cria o cabeçalho da seção de ajuda
-    const helpHeader = document.createElement('div');
-    helpHeader.className = 'help-header';
+  // ====== CARD PRINCIPAL ======
+  const mainCard = document.createElement("div");
+  mainCard.className =
+    "w-full max-w-3xl bg-[#111018] rounded-2xl p-5 mb-6 shadow-lg flex flex-col transition-all duration-300";
 
-    const helpContent = document.createElement('div');
-    helpContent.className = 'help-content';
+  const mainTitle = document.createElement("h2");
+  mainTitle.className = "text-2xl sm:text-3xl font-bold text-center mb-3 px-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(78,154,241,0.5)]";
+  mainTitle.textContent = "Selecione uma pergunta abaixo";
 
-    // Cria o título
-    const headerTitle = document.createElement('h2');
-    headerTitle.innerHTML = '<i class="fas fa-question-circle"></i> Precisa de ajuda?';
-    helpContent.appendChild(headerTitle);
+  const mainDesc = document.createElement("p");
+  mainDesc.className = "text-gray-400 text-sm md:text-base";
+  mainDesc.textContent = "Clique em uma pergunta para ver a resposta aqui.";
 
-    // Cria o parágrafo
-    const headerParagraph = document.createElement('p');
-    headerParagraph.textContent = 'Temos uma equipe dedicada para esclarecer suas dúvidas e garantir a melhor experiência. Confira as perguntas frequentes abaixo ou entre em contato conosco!';
-    helpContent.appendChild(headerParagraph);
+  mainCard.appendChild(mainTitle);
+  mainCard.appendChild(mainDesc);
+  section.appendChild(mainCard);
 
-    helpHeader.appendChild(helpContent);
+  // ====== GRID DE CARDS ======
+  const cardsGrid = document.createElement("div");
+  cardsGrid.className =
+    "grid grid-cols-4 sm:grid-cols-2 gap-4 max-w-6xl w-full justify-items-center";
 
-    // Cria a div para as imagens de ajuda
-    const helpImages = document.createElement('div');
-    helpImages.className = 'help-images';
+  const faqs = [
+    { question: "O que é IPTV?", answer: "IPTV (Internet Protocol Television) é um serviço que transmite canais de TV e conteúdos sob demanda pela internet." },
+    { question: "Quanto tempo demora?", answer: "Após a confirmação do pagamento, o serviço é ativado em até 10 minutos." },
+    { question: "Quais dispositivos podem ser usados?", answer: "Compatível com Smart TVs, smartphones, tablets, computadores e dispositivos como TV Box e Fire Stick." },
+    { question: "Eu tenho suporte?", answer: "Sim, oferecemos suporte técnico dedicado 24/7 para ajudar em qualquer questão." },
+    { question: "Como posso testar meu serviço?", answer: "Oferecemos teste gratuito de até 7 horas para que você experimente a qualidade do nosso serviço." },
+    { question: "Velocidade de internet recomendada?", answer: "Recomendamos no mínimo 10 Mbps para uma experiência de streaming estável e de alta qualidade." },
+    { question: "Quantas conexões ao mesmo tempo?", answer: "Nossos planos permitem 1 conexão por assinatura. Entre em contato para pacotes com múltiplas conexões." },
+    { question: "Vocês oferecem teste grátis?", answer: "Sim, você pode solicitar um teste gratuito para verificar se nosso serviço atende às suas expectativas." },
+  ];
 
-    // Lista de imagens
-    const imageSources = ['img/user1.jpg', 'img/user2.jpg', 'img/user3.jpg', 'img/user4.jpg'];
-    imageSources.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = 'Usuário';
-        helpImages.appendChild(img);
+  faqs.forEach((faq) => {
+    const card = document.createElement("div");
+    card.className =
+      "w-full max-w-[160px] sm:max-w-[calc(50%-1rem)] h-24 bg-[#141422] rounded-2xl p-3 flex items-center justify-center text-center text-sm font-semibold cursor-pointer text-white shadow-md hover:scale-105 transition-transform duration-300";
+    card.textContent = faq.question;
+
+    card.addEventListener("click", () => {
+      mainTitle.textContent = faq.question;
+      mainDesc.textContent = faq.answer;
+
+      document.querySelectorAll(".selected-card").forEach((el) =>
+        el.classList.remove("selected-card", "border-cyan-400", "border-2")
+      );
+      card.classList.add("selected-card", "border-cyan-400", "border-2");
     });
 
-    helpHeader.appendChild(helpImages);
+    cardsGrid.appendChild(card);
+  });
 
-    // Adiciona o botão de contato
-    const contactButton = document.createElement('a');
-    contactButton.href = '#';
-    contactButton.className = 'contact-button';
-    contactButton.innerHTML = '<i class="fas fa-envelope"></i> Contate-nos';
-    helpHeader.appendChild(contactButton);
+  section.appendChild(cardsGrid);
+  document.body.appendChild(section);
 
-    // Adiciona o cabeçalho à seção
-    section.appendChild(helpHeader);
+  // ====== ESTILOS ADICIONAIS ======
+  const style = document.createElement("style");
+  style.textContent = `
+    .selected-card {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
 
-    // Cria a div para perguntas frequentes
-    const questionsContainer = document.createElement('div');
-    questionsContainer.className = 'questions-container';
+    @media (max-width: 768px) {
+      #faq > div:first-child {
+        width: 95%; 
+        margin-bottom: 1rem; 
+      }
 
-    const questionsTitle = document.createElement('h3');
-    questionsTitle.innerHTML = '<i class="fas fa-comments"></i> Perguntas Frequentes';
-    questionsContainer.appendChild(questionsTitle);
+      #faq .grid {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 0.75rem; 
+      }
 
-    const questionsParagraph = document.createElement('p');
-    questionsParagraph.textContent = 'Encontre respostas rápidas para as dúvidas mais comuns sobre nossos serviços. Caso precise de mais informações, nossa equipe está pronta para ajudar.';
-    questionsContainer.appendChild(questionsParagraph);
+      #faq .grid > div {
+        max-width: 45vw; 
+      }
+    }
 
-    // Cria a grade de perguntas
-    const questionsGrid = document.createElement('div');
-    questionsGrid.className = 'questions-grid';
-
-    // Lista de perguntas
-    const questions = [
-        {
-            icon: 'fas fa-tv',
-            question: 'O que é IPTV?',
-            answer: 'IPTV (Internet Protocol Television) é um serviço que transmite canais de TV e conteúdos sob demanda pela internet.'
-        },
-        {
-            icon: 'fas fa-clock',
-            question: 'Quanto tempo demora?',
-            answer: 'Após a confirmação do pagamento, o serviço é ativado em até 10 minutos.'
-        },
-        {
-            icon: 'fas fa-tablet-alt',
-            question: 'Quais dispositivos podem ser usados?',
-            answer: 'Nosso serviço é compatível com Smart TVs, smartphones, tablets, computadores e dispositivos como TV Box e Fire Stick.'
-        },
-        {
-            icon: 'fas fa-headset',
-            question: 'Eu tenho suporte?',
-            answer: 'Sim, oferecemos suporte técnico dedicado 24/7 para ajudar em qualquer questão.'
-        },
-        {
-            icon: 'fas fa-vial',
-            question: 'Como posso testar meu serviço?',
-            answer: 'Oferecemos teste gratuito de até 7 horas para que você experimente a qualidade do nosso serviço.'
-        },
-        {
-            icon: 'fas fa-wifi',
-            question: 'Velocidade de internet recomendada?',
-            answer: 'Recomendamos no mínimo 10 Mbps para uma experiência de streaming estável e de alta qualidade.'
-        },
-        {
-            icon: 'fas fa-users',
-            question: 'Quantas conexões ao mesmo tempo?',
-            answer: 'Nossos planos permitem 1 conexão por assinatura. Entre em contato para pacotes com múltiplas conexões.'
-        },
-        {
-            icon: 'fas fa-gift',
-            question: 'Vocês oferecem teste grátis?',
-            answer: 'Sim, você pode solicitar um teste gratuito para verificar se nosso serviço atende às suas expectativas.'
-        }
-    ];
-
-    // Cria os itens de perguntas
-    questions.forEach(q => {
-        const questionItem = document.createElement('div');
-        questionItem.className = 'question-item';
-
-        const questionTitle = document.createElement('h4');
-        questionTitle.innerHTML = `<i class="${q.icon}" style="color: #fff;"></i> ${q.question}`;
-        questionItem.appendChild(questionTitle);
-
-        const questionAnswer = document.createElement('p');
-        questionAnswer.textContent = q.answer;
-        questionItem.appendChild(questionAnswer);
-
-        questionsGrid.appendChild(questionItem);
-    });
-
-    questionsContainer.appendChild(questionsGrid);
-    section.appendChild(questionsContainer);
-
-    // Adiciona a seção ao body
-    document.body.appendChild(section);
+    @media (min-width: 1024px) {
+      #faq .grid {
+        grid-template-columns: repeat(3, 1fr); 
+      }
+    }
+  `;
+  document.head.appendChild(style);
 });
