@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, interval);
   }
 
-  const intervals = [3000, 7000, 11000, 12000, 9000, 5000];
+  const intervals = [5000, 8000, 5000, 8000, 5000, 8000];
   for (let i = 1; i <= 6; i++) {
     changeImage(`card${i}`, intervals[i - 1]);
   }
